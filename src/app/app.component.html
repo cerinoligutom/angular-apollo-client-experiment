@@ -1,16 +1,16 @@
 <div class="container my-5">
   <div class="row">
     <button class="btn btn-outline-primary" (click)="writeToCacheDirectWay()">
-      Write random number to cache
+      Write random number to cache (direct way)
     </button>
     <div class="input-group mt-2">
       <input class="form-control" style="max-width: 200px;" #cacheInput type="number" value="0" />
       <div class="input-group-append">
         <button class="btn btn-outline-primary" (click)="writeToCacheMutationWay(cacheInput.value)">
-          Write input to cache
+          Write input to cache (mutation way)
         </button>
         <button class="btn btn-outline-primary" (click)="writeToCacheMutationWayWithCacheUpdate(cacheInput.value)">
-          Write input to cache with cache update
+          Write input to cache with cache update (mutation way)
         </button>
       </div>
     </div>
