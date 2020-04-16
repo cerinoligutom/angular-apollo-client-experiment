@@ -20,6 +20,8 @@ import {
   RandomizeUsernameGQL,
 } from './generated/graphql';
 import { Apollo, QueryRef } from 'apollo-angular';
+import { map } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -29,6 +31,7 @@ import { Apollo, QueryRef } from 'apollo-angular';
 export class AppComponent implements OnInit {
   customRandomNumberListener1 = 0;
   customRandomNumberListener2 = 0;
+  customRandomNumberListener3: Observable<number>;
   cacheInput = 0;
 
   users: FetchUsersQuery['users']['nodes'] = [];
@@ -49,18 +52,42 @@ export class AppComponent implements OnInit {
     private getBolbets: GetBolbetsGQL,
     private addToBolbetsList: AddToBolbetsListGQL,
     private removeFromBolbetsList: RemoveFromBolbetsListGQL,
-    private randomizeUsername: RandomizeUsernameGQL
+    private randomizeUsername: RandomizeUsernameGQL,
   ) {}
 
   ngOnInit() {
     this.fetchUsersQuery = this.fetchUsers.watch();
 
-    // this.getUsers();
     this.listenToCache();
     this.listenToCache2();
+    // ListenToCache3 via async pipe
+    this.customRandomNumberListener3 = this.getFromCache.watch().valueChanges.pipe(map((result) => result.data?.customRandomNumber));
 
     this.fetchInitialUsers();
     this.observeBolbets();
+  }
+
+  listenToCache() {
+    console.log('AppComponent -> listenToCache -> listenToCache');
+    this.getFromCache.watch().valueChanges.subscribe((result) => {
+      this.customRandomNumberListener1 = result.data?.customRandomNumber;
+    });
+
+    // this.apollo
+    //   .watchQuery<GetFromCacheQuery>({
+    //     query: GetFromCacheDocument,
+    //   })
+    //   .valueChanges.subscribe((result) => {
+    //     console.log('AppComponent -> listenToCache -> result', result);
+    //     this.customRandomNumber = result.data?.customRandomNumber;
+    //   });
+  }
+
+  listenToCache2() {
+    this.getFromCache.watch().valueChanges.subscribe((result) => {
+      console.log('listenToCache2 new value', result);
+      this.customRandomNumberListener2 = result.data?.customRandomNumber;
+    });
   }
 
   writeToCacheDirectWay() {
@@ -105,9 +132,11 @@ export class AppComponent implements OnInit {
           // local states in this example.
           // https://www.apollographql.com/docs/angular/features/cache-updates/#update
           update: (proxy, result) => {
+            console.log('AppComponent -> writeToCacheMutationWayWithCacheUpdate -> update', result);
             const {
               data: { writeCustomRandomNumber },
             } = result;
+
             const data = proxy.readQuery<GetFromCacheQuery>({
               query: GetFromCacheDocument,
             });
@@ -133,38 +162,18 @@ export class AppComponent implements OnInit {
               variables: {},
             },
           ],
-        }
+        },
       )
       .subscribe();
-  }
-
-  listenToCache() {
-    console.log('AppComponent -> listenToCache -> listenToCache');
-    this.getFromCache.watch().valueChanges.subscribe((result) => {
-      this.customRandomNumberListener1 = result.data?.customRandomNumber;
-    });
-
-    // this.apollo
-    //   .watchQuery<GetFromCacheQuery>({
-    //     query: GetFromCacheDocument,
-    //   })
-    //   .valueChanges.subscribe((result) => {
-    //     console.log('AppComponent -> listenToCache -> result', result);
-    //     this.customRandomNumber = result.data?.customRandomNumber;
-    //   });
-  }
-
-  listenToCache2() {
-    this.getFromCache.watch().valueChanges.subscribe((result) => {
-      console.log('listenToCache2 new value', result);
-      this.customRandomNumberListener2 = result.data?.customRandomNumber;
-    });
   }
 
   async getUsers() {
     this.apollo
       .watchQuery<FetchUsersQuery, FetchUsersQueryVariables>({
         query: FetchUsersDocument,
+        variables: {
+          after: this.pageInfo?.endCursor,
+        },
       })
       .valueChanges.subscribe((result) => {
         this.users = result.data.users.nodes;
@@ -172,7 +181,7 @@ export class AppComponent implements OnInit {
         this.loading = result.loading;
       });
 
-    // or
+    // OR
 
     // this.fetchUsers.watch().valueChanges.subscribe((result) => {
     //   this.users = result.data.users.nodes;
@@ -201,16 +210,14 @@ export class AppComponent implements OnInit {
           return previousResult;
         }
 
+        // Update local states
         this.pageInfo = fetchMoreResult.users.pageInfo;
 
         return {
           __typename: 'Query',
           users: {
             __typename: 'UserConnection',
-            nodes: [
-              ...previousResult.users.nodes,
-              ...fetchMoreResult.users.nodes,
-            ],
+            nodes: [...previousResult.users.nodes, ...fetchMoreResult.users.nodes],
             pageInfo: fetchMoreResult.users.pageInfo,
           },
         };

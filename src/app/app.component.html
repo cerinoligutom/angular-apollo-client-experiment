@@ -4,24 +4,12 @@
       Write random number to cache
     </button>
     <div class="input-group mt-2">
-      <input
-        class="form-control"
-        style="max-width: 200px;"
-        #cacheInput
-        type="number"
-        value="0"
-      />
+      <input class="form-control" style="max-width: 200px;" #cacheInput type="number" value="0" />
       <div class="input-group-append">
-        <button
-          class="btn btn-outline-primary"
-          (click)="writeToCacheMutationWay(cacheInput.value)"
-        >
+        <button class="btn btn-outline-primary" (click)="writeToCacheMutationWay(cacheInput.value)">
           Write input to cache
         </button>
-        <button
-          class="btn btn-outline-primary"
-          (click)="writeToCacheMutationWayWithCacheUpdate(cacheInput.value)"
-        >
+        <button class="btn btn-outline-primary" (click)="writeToCacheMutationWayWithCacheUpdate(cacheInput.value)">
           Write input to cache with cache update
         </button>
       </div>
@@ -30,12 +18,16 @@
 
   <div class="row mt-2">
     <div class="col-md-6">
-      <h2>Number Listener 1:</h2>
+      <h2>Number Listener 1 (main):</h2>
       <h1>{{ customRandomNumberListener1 }}</h1>
     </div>
     <div class="col-md-6">
-      <h2>Number Listener 2:</h2>
+      <h2>Number Listener 2 (other):</h2>
       <h1>{{ customRandomNumberListener2 }}</h1>
+    </div>
+    <div class="col-md-12">
+      <h2>Number Listener 3 (async pipe):</h2>
+      <h1>{{ customRandomNumberListener3 | async }}</h1>
     </div>
   </div>
 </div>
@@ -64,10 +56,7 @@
               <p class="card-text">Username: {{ user.username }}</p>
             </div>
             <div class="card-footer d-flex justify-content-end align-items-end">
-              <button
-                class="btn btn-info mr-2"
-                (click)="generateNewUsername(user.id)"
-              >
+              <button class="btn btn-info mr-2" (click)="generateNewUsername(user.id)">
                 Randomize username
               </button>
               <button class="btn btn-danger" (click)="addAsBolbets(user)">
@@ -90,16 +79,10 @@
               <p class="card-text">Username: {{ bolbet.username }}</p>
             </div>
             <div class="card-footer d-flex justify-content-end align-items-end">
-              <button
-                class="btn btn-info mr-2"
-                (click)="generateNewUsername(bolbet.id)"
-              >
+              <button class="btn btn-info mr-2" (click)="generateNewUsername(bolbet.id)">
                 Randomize username
               </button>
-              <button
-                class="btn btn-success"
-                (click)="removeAsBolbets(bolbet.id)"
-              >
+              <button class="btn btn-success" (click)="removeAsBolbets(bolbet.id)">
                 Enlightened!
               </button>
             </div>
