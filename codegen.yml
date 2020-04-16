@@ -1,0 +1,15 @@
+overwrite: true
+watch: true
+schema:
+  - http://localhost:8080/graphql
+  - 'src/app/**/*.graphql'
+  # - 'src/app/graphql.module.ts'
+documents:
+  - 'src/app/**/*.graphql'
+  # - 'src/app/graphql.module.ts'
+generates:
+  ./src/app/generated/graphql.ts:
+    plugins:
+      - typescript
+      - typescript-operations
+      - typescript-apollo-angular

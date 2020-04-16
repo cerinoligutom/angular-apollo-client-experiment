@@ -1,0 +1,19 @@
+query FetchUsers($after: String) {
+  users(after: $after, first: 10) @connection(key: "users") {
+    nodes {
+      id
+      email
+      username
+    }
+    pageInfo {
+      endCursor
+      hasNextPage
+      hasPreviousPage
+      startCursor
+    }
+  }
+}
+
+mutation Logout {
+  logout
+}

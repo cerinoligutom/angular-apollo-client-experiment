@@ -1,0 +1,53 @@
+extend type Query {
+  customRandomNumber: Float!
+}
+
+query GetFromCache {
+  customRandomNumber @client
+}
+
+extend type Mutation {
+  writeCustomRandomNumber(input: Float): Float
+}
+
+mutation WriteToCache($input: Float) {
+  writeCustomRandomNumber(input: $input) @client
+}
+
+################
+
+extend type Query {
+  bolbets: [User!]!
+}
+
+query GetBolbets {
+  bolbets @client {
+    id
+    email
+    username
+  }
+}
+
+extend type Mutation {
+  addToBolbetsList(user: UserInput!): Boolean
+  removeFromBolbetsList(userId: ID!): Boolean
+  randomizeUsername(userId: ID!): Boolean
+}
+
+mutation AddToBolbetsList($user: UserInput!) {
+  addToBolbetsList(user: $user) @client
+}
+
+mutation RemoveFromBolbetsList($userId: ID!) {
+  removeFromBolbetsList(userId: $userId) @client
+}
+
+mutation RandomizeUsername($userId: ID!) {
+  randomizeUsername(userId: $userId) @client
+}
+
+input UserInput {
+  id: ID!
+  email: String!
+  username: String!
+}

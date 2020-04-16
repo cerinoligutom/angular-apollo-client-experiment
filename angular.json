@@ -123,6 +123,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "angular-apollo-client-experiment"
+    }
+  },
+  "defaultProject": "angular-apollo-client-experiment",
+  "cli": {
+    "analytics": false
+  }
 }
