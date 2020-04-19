@@ -10,6 +10,9 @@ export const randomizeUsername: CustomResolver<any, MutationRandomizeUsernameArg
   // Randomize
   bolbet.username = `${Math.random()}`;
 
+  /**
+   * Query Document way
+   */
   cache.writeQuery({
     query: GetBolbetsDocument,
     data,
@@ -17,8 +20,12 @@ export const randomizeUsername: CustomResolver<any, MutationRandomizeUsernameArg
 
   // OR
 
-  // Prefer using `getCacheKey()` because you
-  // can override the cache key logic.
+  /**
+   * Cache Key way
+   */
+
+  // Prefer using `getCacheKey()` because it is possible to override
+  // the formation of the cache key logic.
   const cacheKey = getCacheKey(bolbet);
 
   cache.writeData({

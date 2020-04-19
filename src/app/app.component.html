@@ -36,8 +36,11 @@
 
 <div class="container my-5">
   <div class="row d-flex align-items-center flex-column">
+    <button class="btn btn-lg btn-primary" (click)="fetchMoreUsersNaive()">
+      Fetch more (naive)
+    </button>
     <button class="btn btn-lg btn-primary" (click)="fetchMoreUsers()">
-      Fetch more
+      Fetch more (smart + update cache)
     </button>
   </div>
   <h1 *ngIf="loading">

@@ -1,3 +1,8 @@
+/**
+ * Apollo Client only offers very generic resolver types so
+ * I had to create these to get some type safety.
+ */
+
 import { InMemoryCache } from 'apollo-cache-inmemory';
 
 export type GetCacheKeyFn = (args: Record<any, any>) => string;

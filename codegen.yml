@@ -2,11 +2,10 @@ overwrite: true
 watch: true
 schema:
   - http://localhost:8080/graphql
+  # Since we have client side schema now as well
   - 'src/app/**/*.graphql'
-  # - 'src/app/graphql.module.ts'
 documents:
   - 'src/app/**/*.graphql'
-  # - 'src/app/graphql.module.ts'
 generates:
   ./src/app/generated/graphql.ts:
     plugins:
