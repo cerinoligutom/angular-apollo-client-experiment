@@ -1,27 +1,39 @@
-# AngularApolloClientExperiment
+# Angular Apollo Client Experiment
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 9.1.1.
+This shows examples of using the Apollo Client and Apollo-Angular.
 
-## Development server
+**Important:** Make sure to observe the Apollo Cache with the Apollo Dev Tools extension.
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+## Prerequisites
 
-## Code scaffolding
+- [Backend server used by this example](https://github.com/cerino-ligutom/GraphQL-Starter)
+  - As of this [commit](https://github.com/cerino-ligutom/GraphQL-Starter/commit/c82e307da83530db473946763fa84a690c7e13c9)
+- Angular CLI
+- Apollo Dev Tools browser extension
+  - For observing the cache
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+## Getting Started
 
-## Build
+On one terminal window (run the GraphQL Code Generator tool):
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+```
+npm run graphql
+```
 
-## Running unit tests
+On another terminal window (run the Angular app):
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+```
+npm start
+```
 
-## Running end-to-end tests
+Then go to [http://localhost:4200](http://localhost:4200)
 
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
+## Notes
 
-## Further help
+1. See `codegen.yml` for the GraphQL Code Generator configuration/setup
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+2. `apollo.config.json` file is the config for the Apollo GraphQL VS Code Extension to get code completion on graphql files.
+
+3. `@client` directive is for client-side stuffs. This is an important directive for the apollo client to determine whether to hit the server or not when the query is hit.
+
+4. GraphQL Code Generator watches graphql files as per config and automatically generates TypeScript type definitions based on your valid GraphQL Schema + accompanying apollo-angular services ready to be injected to your components/services.
